@@ -1,0 +1,72 @@
+body {
+   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.topBarButton {
+   background-color: white;
+
+   border-radius: 5px;
+   padding: 6px 20px;
+}
+
+.add {
+   border-color: rgb(61, 168, 79);
+   color: rgb(61, 168, 79);
+}
+
+.delete {
+   border-color: rgb(165, 49, 49);
+   color: rgb(165, 49, 49);
+}
+
+.edit {
+   border-color: rgb(24, 74, 167);
+   color: rgb(24, 74, 167);
+}
+
+.btn-add {
+   width: 100%;
+   border: 0px;
+   padding: 6px;
+   margin-top: 0px;
+}
+
+.btn-add:hover {
+   opacity: 0.6;
+}
+
+.input-form {
+   width: 123px;
+   border: 0px;
+}
+
+.input-form:focus {
+   border: 0px;
+   outline: none;
+}
+
+.form {
+   display: flex;
+   flex-direction: column;
+   border: 1px solid rgb(182, 182, 182);
+}
+
+.form-button {
+   background-color: rgb(234, 234, 234);
+   border: 0px;
+   padding: 6px;
+}
+
+.form-button:hover {
+   opacity: 0.8;
+}
+
+.float {
+   position: relative;
+   top: -200px;
+   left: 990px;
+}
+
+.my-float {
+   margin-top: 22px;
+}
