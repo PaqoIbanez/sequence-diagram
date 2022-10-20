@@ -10,6 +10,7 @@ type LinkedActionType =
    | { type: '[Linked] - deleteCompetence', payload: Competence[] }
    | { type: '[Linked] - setLines', payload: Line[] }
    | { type: '[Linked] - setSubcompetences', payload: string[] }
+   | { type: '[Linked] - setShowLines', payload: string[] }
    | { type: '[Linked] - setSelectedSubcompetence', payload: string }
    | { type: '[Linked] - setRelations', payload: Relation[] }
 
@@ -75,6 +76,12 @@ export const linkedReducer = (state: LinkedState, action: LinkedActionType): Lin
          return {
             ...state,
             lines: action.payload
+         }
+
+      case '[Linked] - setShowLines':
+         return {
+            ...state,
+            showLines: action.payload
          }
 
       default:

@@ -14,19 +14,19 @@ interface Props {
 
 const ListItem = ({ item, index, columnId, setIsAddButtonClicked }: Props) => {
 
-   const { selected, setSelected, setRelations, relations, state, setState, addConnection, removeConnection, lines, subcompetences, selectedSubcompetence } = useContext(LinkedContext);
+   const { showLines, selected, setSelected, setRelations, relations, state, setState, addConnection, removeConnection, lines, subcompetences, selectedSubcompetence } = useContext(LinkedContext);
 
    const handleClick = (item: Competence) => {
-      console.log(item);
-      
-      if (state === 'delete') {
-         setState('normal');
-         return setSelected(null);
-      }
+      // if (state === 'delete') {
+      //    setState('normal');
+      //    return setSelected(null);
+      // }
+
       setSelected(item);
       if (state === 'addConnection') {
          if (selectedSubcompetence === '') {
-            return alert('Select a subcompetence first');
+            setSelected(selected);
+            return alert('You must select a subcompetence first');
          };
          setRelations([...relations, {
             from: selected!,
@@ -50,7 +50,7 @@ const ListItem = ({ item, index, columnId, setIsAddButtonClicked }: Props) => {
    return (
       <Draggable draggableId={item.id} index={index}>
          {(provided, snapshot) => {
-            
+
             if (selected?.id === item.id && state === 'edit') {
                return <AddForm competence={item} columnId={columnId} setIsAddButtonClicked={setIsAddButtonClicked} />
             } else {
@@ -82,8 +82,7 @@ const ListItem = ({ item, index, columnId, setIsAddButtonClicked }: Props) => {
                      lines.map((line, i) => {
 
 
-                        if (line.start === item.id) {
-                           // console.log(line.labels.start);
+                        if (line.start === item.id && showLines.includes(line.subcompetence)) {
 
                            return (
                               <Xarrow
@@ -92,8 +91,57 @@ const ListItem = ({ item, index, columnId, setIsAddButtonClicked }: Props) => {
                                  strokeWidth={line.subcompetence === selectedSubcompetence ? 1.2 : 0.8}
                                  key={i}
                                  {...line}
-                                 startAnchor={{ position: "right", offset: i === 0 ? { y: -6 } : { y: 6 } }}
-                                 endAnchor={{ position: "left", offset: i === 0 ? { y: -6 } : { y: 6 } }}
+                                 startAnchor={{
+                                    position: "right",
+                                    offset: i === 0
+                                       ? { y: -17 }
+                                       : i == 1
+                                          ? { y: -13 }
+                                          : i == 2
+                                             ? { y: -9 }
+                                             : i == 3
+                                                ? { y: -5 }
+                                                : i == 4
+                                                   ? { y: 3 }
+                                                   : i == 5
+                                                      ? { y: 5 }
+                                                      : i == 6
+                                                         ? { y: 9 }
+                                                         : i == 7
+                                                            ? { y: 13 }
+                                                            : i == 8
+                                                               ? { y: 17 }
+                                                               : i == 9
+                                                                  ? { y: 21 }
+                                                                  : i == 10
+                                                                     ? { y: 24 }
+                                                                     : { y: 10 }
+                                 }}
+                                 endAnchor={{
+                                    position: "left", offset: i === 0
+                                       ? { y: -17 }
+                                       : i == 1
+                                          ? { y: -13 }
+                                          : i == 2
+                                             ? { y: -9 }
+                                             : i == 3
+                                                ? { y: -5 }
+                                                : i == 4
+                                                   ? { y: 3 }
+                                                   : i == 5
+                                                      ? { y: 5 }
+                                                      : i == 6
+                                                         ? { y: 9 }
+                                                         : i == 7
+                                                            ? { y: 13 }
+                                                            : i == 8
+                                                               ? { y: 17 }
+                                                               : i == 9
+                                                                  ? { y: 21 }
+                                                                  : i == 10
+                                                                     ? { y: 24 }
+                                                                     : { y: 10 }
+                                 }}
                                  labels={{
                                     start: <div
                                        style={{ fontSize: 8 }}

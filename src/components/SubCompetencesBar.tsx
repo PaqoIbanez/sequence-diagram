@@ -4,7 +4,7 @@ import { Subcompetence } from '../interfaces/interfaces';
 
 export const SubCompetencesBar = () => {
 
-   const { state, setState, subcompetences, setSubcompetences, selectedSubcompetence, setSelectedSubcompetence } = useContext(LinkedContext);
+   const { state, setState, setShowLines, subcompetences, setSubcompetences, selectedSubcompetence, setSelectedSubcompetence } = useContext(LinkedContext);
    const [subcompetenceName, setSubCompetenceName] = useState('');
 
    const [error, setError] = useState({
@@ -20,13 +20,15 @@ export const SubCompetencesBar = () => {
       setSubcompetences([...subcompetences, subcompetenceName])
       setError({ isError: false, message: '' })
       setState('newSubcompetence');
+      setShowLines([...subcompetences, subcompetenceName]);
    }
 
    return (
       <div style={{
          width: 200,
-         float: 'left',
-         marginLeft: 10
+         // float: 'left',
+         // marginLeft: 10,
+         // marginTop: -100
       }}>
          <div style={{ display: 'flex', flexDirection: 'column' }}>
             {

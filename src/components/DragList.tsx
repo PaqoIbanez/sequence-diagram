@@ -9,6 +9,8 @@ import { linkedListAPI } from '../api/api';
 import { SubCompetencesBar } from "./SubCompetencesBar";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { ufData } from '../data/uf';
+import { relationsData } from '../data/relations';
 
 type Columns = {
    [key: string]: {
@@ -18,22 +20,23 @@ type Columns = {
 }
 
 export const DragList = () => {
-   const { setRelations, relations, selected, competences, setCompetences, setLines, setSubcompetences, subcompetences, setSelectedSubcompetence, selectedSubcompetence } = useContext(LinkedContext);
+   const { setRelations, relations, showLines, selected, competences, setCompetences, setShowLines, setLines, setSubcompetences, subcompetences, setSelectedSubcompetence, selectedSubcompetence } = useContext(LinkedContext);
    const [columns, setColumns] = useState<Columns>(getColumns(competences));
 
 
    useEffect(() => {
-      linkedListAPI.get('/ufs/1').then(data => {
-         setCompetences(data.data.data[0].competences)
-      });
-      linkedListAPI.get<RelationAPI>('/relations').then(data => {
-         const relations = data.data.data;
+      // linkedListAPI.get('/ufs/1').then(data => {
+         setCompetences(ufData.data[0].competences)
+      // });
+      // linkedListAPI.get<RelationAPI>('/relations').then(data => {
+         const relations = relationsData.data;
          const tmpSubcompetences: string[] = [];
          relations.map((a: any) => tmpSubcompetences.push(a.name));
          const subcompetences = new Set(tmpSubcompetences);
+         setShowLines([...subcompetences]);
          setSubcompetences([...subcompetences]);
          setRelations(relations);
-      });
+      // });
    }, []);
 
    useEffect(() => {
@@ -81,6 +84,11 @@ export const DragList = () => {
    }
 
    return <div>
+      <div style={{display: 'flex'}}>
+
+      <SubCompetencesBar />
+      <button onClick={printDocument} style={{height: 20}}> View PDF </button>
+      </div>
       <div id="pdf">
          <div
             style={{
@@ -118,7 +126,13 @@ export const DragList = () => {
                {
                   subcompetences.map((sub, i) => {
                      return <div key={sub} style={{ display: 'flex' }}>
-                        <input type='checkbox' />
+                        <input
+                           type='checkbox'
+                           checked={showLines.includes(sub)}
+                           onChange={() => {
+                              showLines.includes(sub) ? setShowLines(showLines.filter(line => line !== sub)) : setShowLines([...showLines, sub])
+                           }}
+                        />
                         <div
                            style={{
                               textAlign: 'center',
@@ -164,19 +178,25 @@ export const DragList = () => {
                            }}
                            style={{
                               cursor: 'pointer',
-                              color: selectedSubcompetence === sub ? 'blue' : 'black'
+                              color: selectedSubcompetence === sub ? 'blue' : 'black',
                            }}
+                           className={`subcompetence ${selectedSubcompetence === sub && 'selected'}`}
                         >
                            {sub}
                         </div>
+                        <button
+                           className="delete-button"
+                           onClick={() => {
+                              setSubcompetences([...subcompetences.filter(subcompetence => subcompetence !== sub)]);
+                              setRelations([...relations.filter(relation => relation.name !== sub)]);
+                           }}
+                        >X</button>
                      </div>
                   })
                }
             </div>
          </DragDropContext>
       </div>
-      <SubCompetencesBar />
-      <button onClick={printDocument}> View PDF </button>
    </div>
 }
 

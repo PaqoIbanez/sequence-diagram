@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { Competence, State, Line, Relation } from '../interfaces/interfaces';
+import { Competence, State, Line, Relation, Subcompetence } from '../interfaces/interfaces';
 import { LinkedContext, linkedReducer } from './';
 
 export interface LinkedState {
@@ -10,6 +10,7 @@ export interface LinkedState {
    state: State;
    lines: Line[];
    relations: Relation[];
+   showLines: string[];
 }
 
 const LINKED_INITIAL_STATE: LinkedState = {
@@ -20,6 +21,7 @@ const LINKED_INITIAL_STATE: LinkedState = {
    relations: [],
    state: 'normal',
    lines: [],
+   showLines: []
 }
 
 interface Props {
@@ -38,15 +40,12 @@ export const LinkedProvider = ({ children }: Props) => {
       dispatch({ type: '[Linked] - setState', payload: state })
    }
 
-   const addConnection = (start: Competence, end: Competence, semester: number) => {
-
+   const addConnection = (start: Competence, end: Competence) => {
       setRelations([...state.relations, {
          from: start,
          name: state.selectedSubcompetence,
          to: end,
       }]);
-
-
    }
 
    const removeConnection = (start: string, end: string) => {
@@ -65,9 +64,6 @@ export const LinkedProvider = ({ children }: Props) => {
 
    const deleteSubcompetence = (id: string) => {
       const newCompetences = state.competences.filter(competence => competence.id !== id);
-      console.log(state.competences);
-      console.log(newCompetences);
-
       dispatch({ type: '[Linked] - deleteCompetence', payload: newCompetences })
    }
 
@@ -87,6 +83,10 @@ export const LinkedProvider = ({ children }: Props) => {
       dispatch({ type: '[Linked] - setSelectedSubcompetence', payload: subcompetence })
    }
 
+   const setShowLines = (subcompetences: string[]) => {
+      dispatch({ type: '[Linked] - setShowLines', payload: subcompetences })
+   }
+
    return (
       <LinkedContext.Provider value={{
          ...state,
@@ -100,7 +100,8 @@ export const LinkedProvider = ({ children }: Props) => {
          setLines,
          setSubcompetences,
          setSelectedSubcompetence,
-         setRelations
+         setRelations,
+         setShowLines
       }}>
          {children}
       </LinkedContext.Provider>

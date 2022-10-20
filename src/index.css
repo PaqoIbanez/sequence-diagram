@@ -70,3 +70,23 @@ body {
 .my-float {
    margin-top: 22px;
 }
+
+.subcompetence:hover {
+   font-weight: bold;
+}
+
+.selected {
+   font-weight: bold;
+}
+
+.delete-button{
+   margin-inline: 2px;
+   background-color: transparent;
+   border: 0px;
+}
+
+.delete-button:hover{
+   background-color: red;
+   /* border: 0px; */
+   color: white;
+}

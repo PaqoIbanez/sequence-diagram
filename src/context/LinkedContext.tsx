@@ -10,11 +10,12 @@ interface ContextProps {
    state: State;
    lines: Line[];
    relations: Relation[];
+   showLines: string[];
 
    //Methods
    setSelected: (competence: Competence | null) => void;
    setState: (state: State) => void;
-   addConnection: (from: Competence, to: Competence, semester: number) => void;
+   addConnection: (from: Competence, to: Competence) => void;
    removeConnection: (from: string, to: string) => void;
    setCompetences: (competences: Competence[]) => void;
    addCompetence: (competence: Competence) => void;
@@ -23,6 +24,7 @@ interface ContextProps {
    setSubcompetences: (subcompetences: string[]) => void;
    setSelectedSubcompetence: (subcompetence: string) => void;
    setRelations: (relations: Relation[]) => void;
+   setShowLines: (lines: string[]) => void;
 };
 
 export const LinkedContext = createContext({} as ContextProps);

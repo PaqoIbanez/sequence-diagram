@@ -10,7 +10,7 @@ interface Props {
 
 export const AddForm = ({ setIsAddButtonClicked, columnId, competence }: Props) => {
 
-   const { addCompetence, competences } = useContext(LinkedContext);
+   const { addCompetence, competences, state, setCompetences, setState } = useContext(LinkedContext);
 
    const [id, setId] = useState(competence ? competence.id : '');
    const [name, setName] = useState(competence ? competence.name : '');
@@ -20,6 +20,22 @@ export const AddForm = ({ setIsAddButtonClicked, columnId, competence }: Props) 
 
       if (error) return;
       if (id === '' || name === '') return;
+
+      if (state === 'edit') {
+
+         setCompetences(competences.map(comp => {
+            if (comp.id === competence?.id) {
+               console.log('Hola');
+               comp.id = id;
+               comp.name = name;
+               return comp;
+            } else {
+               return comp
+            }
+         }))
+         setState('normal');
+         return;
+      }
 
       addCompetence({
          id,
@@ -49,8 +65,15 @@ export const AddForm = ({ setIsAddButtonClicked, columnId, competence }: Props) 
          {
             error && <div style={{ backgroundColor: 'red', color: 'white' }}>Este ID ya existe</div>
          }
-         <button className="form-button" onClick={handleFormSubmit}>Agregar</button>
-         <button className="form-button" onClick={() => setIsAddButtonClicked && setIsAddButtonClicked(false)}>Cancelar</button>
+         <button className="form-button" onClick={handleFormSubmit}>
+            {
+               state === 'edit' ? 'Edit' : 'Add'
+            }
+         </button>
+         <button className="form-button" onClick={() => {
+            setIsAddButtonClicked!(false);
+            setState('normal');
+         }}>Cancelar</button>
       </div>
    )
 }
